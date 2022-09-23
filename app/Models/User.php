@@ -8,9 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use Notifiable;
+    use HasApiTokens, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +20,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        // 'name',
+        'first_name',
+        'last_name',
+        'username',
         'email',
         'password',
     ];
@@ -41,4 +46,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function posts(){
+        return $this->hasMany('App\Models\BlogPost');
+    }
+
 }
