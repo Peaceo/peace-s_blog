@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Newsletter;
 use Illuminate\Http\Request;
 
-class BlogPostController extends Controller
+class NewsletterController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,6 @@ class BlogPostController extends Controller
     public function index()
     {
         //
-        $posts = BlogPost::all();
-        return $posts;
     }
 
     /**
@@ -37,6 +36,11 @@ class BlogPostController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate(['email'=>'required']);
+        $post = new Newsletter();
+        $post->email = $request->email;
+        $post->save();
+        return "email has been successfully includeds";
     }
 
     /**

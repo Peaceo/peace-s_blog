@@ -3,12 +3,18 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\BlogPostController;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
+
+use Illuminate\Http\Request;
+
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\NewsletterController;
+
 use App\Models\User;
-use App\Models\BlogPost;
+use App\Models\Post;
+
+
 
 
 /*
@@ -27,11 +33,11 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    // return view('dashboard');
+    return redirect('/home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/auth.php';
-
 
 
 
@@ -61,9 +67,60 @@ Route::get('/profile', function () {
 // Create posts
 Route::get('insert-posts', function(){
     $user = User::findorfail(1);
-    $posts = BlogPost::create(['title'=>"dgdhchegd", 'body'=>"djcnkejjdwjehsbdhnsdchsdncshdjdshcb"]);
+    $posts = Post::create(['title'=>"first blog", 'body'=>"djcnkejjdwjehsbdhnsdchsdncshdjdshcb"]);
     $user->posts()->save($posts);
 });
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/blog', [BlogPostController::class, 'index']);
+Route::get('/blog', [PostController::class, 'index']);
+Route::get('/index2', [HomeController::class, 'index2']);
+Route::get('/users', [HomeController::class, 'users']);
+
+
+// CRUD Application for blog post
+// create post
+/* Route::get('/create', function($id){
+    $user = User::findorfail($id);
+    $post = Post::create();
+    $user->posts()->save($posts);
+    return "post has been successfully created";
+}); */
+
+// read post
+Route::get('/posts', function($id){
+    $posts = User::findorfail($id)->post;
+    foreach ($posts as $post){
+        echo $post;
+        echo '<br />';
+    }  
+
+});
+
+//Update post
+Route::get('/update', function($id){
+ $posts= User::findorfail($id)->posts()->update();
+});
+
+// Delete post
+Route::get('/delete', function($id){
+User::findorfail($id)->posts()->delete(); 
+});
+
+Route::controller(PostController::class)->group(function () {
+    Route::get('/posts', 'index');
+    Route::get('/posts/{id}', 'show');
+    Route::post('/posts', 'store');
+});
+
+// Post Controller
+Route::get('/home', [App\Http\Controllers\PostController::class, 'index'])->name('home');
+// ->with('posts', Post::all());
+Route::get('post/create', [App\Http\Controllers\PostController::class, 'create']);
+Route::post('posts', [App\Http\Controllers\PostController::class, 'store']);
+Route::get('posts/{post}/edit', [App\Http\Controllers\PostController::class, 'edit']);
+Route::get('posts/{post}', [App\Http\Controllers\PostController::class, 'show']);
+Route::put('posts/{post}', [App\Http\Controllers\PostController::class, 'update']);
+Route::delete('posts/{post}', [App\Http\Controllers\PostController::class, 'destroy']);
+
+// Newsletter Controller
+Route::post('subscribe', [App\Http\Controllers\NewsletterController::class, 'store']);

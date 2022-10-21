@@ -24,23 +24,23 @@
             
             <div>
                 <x-label for="login" :value="__('Username or Email')" />
-                <div class="col-md-6">
-                <input id="login" type="text"
+                {{-- <div class="col-md-12"> --}}
+                <x-input  id="login" class="block mt-1 w-full" type="text"
                     class="form-control{{ $errors->has('username') || $errors->has('email') ? ' is-invalid' : '' }}"
-                    name="login" value="{{ old('username') ?: old('email') }}" required autofocus>
+                    name="login" value="{{ old('username') ?: old('email') }}" required autofocus />
         
                 @if ($errors->has('username') || $errors->has('email'))
                     <span class="invalid-feedback">
                         <strong>{{ $errors->first('username') ?: $errors->first('email') }}</strong>
                     </span>
                 @endif
-    </div>
+        {{-- </div> --}}
 
                 {{-- <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus /> --}}
             </div>
 
             <!-- Password -->
-            <div class="mt-4">
+            <div class="mt-6">
                 <x-label for="password" :value="__('Password')" />
 
                 <x-input id="password" class="block mt-1 w-full"
@@ -56,17 +56,25 @@
                     <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                 </label>
             </div>
+            <div class="cta">
+                <x-button class="block mt-1 w-full ">
+                    <div class="text-center" >
+                        {{ __('Log in') }}
+                    </div>
+                  
+                </x-button>
+            </div>
 
             <div class="flex items-center justify-end mt-4">
                 @if (Route::has('password.request'))
                     <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
                         {{ __('Forgot your password?') }}
                     </a>
-                @endif
+                @endif                
 
-                <x-button class="ml-3">
-                    {{ __('Log in') }}
-                </x-button>
+                
+                 <span class="ml-3 "> <a href="/register" class="underline text-sm text-gray-600 hover:text-gray-900" > {{ __('Sign up') }}</a> </span>
+                
             </div>
         </form>
     </x-auth-card>

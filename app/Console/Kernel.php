@@ -13,16 +13,20 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
+     protected $commands = [
+        Commands\SendMail::class,
+    ];
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->command('Send:Mail')->everyTwoMinutes();
     }
 
     /**
      * Register the commands for the application.
      *
      * @return void
-     */
+     */     
     protected function commands()
     {
         $this->load(__DIR__.'/Commands');
