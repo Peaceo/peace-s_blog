@@ -58,7 +58,7 @@
             </div>
             <div class="cta">
                 <x-button class="block mt-1 w-full ">
-                    <div class="text-center" >
+                    <div class="text-center" style="padding: 0 43%" >
                         {{ __('Log in') }}
                     </div>
                   
